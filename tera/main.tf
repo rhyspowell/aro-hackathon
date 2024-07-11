@@ -29,7 +29,7 @@ resource "azurerm_resource_group" "example" {
 
 resource "azurerm_virtual_network" "example" {
   name                = "aro-cluster-vnet"
-  address_space       = ["10.0.0.0/22"]
+  address_space       = [var.vnet_ip_range]
   location            = azurerm_resource_group.example.location
   resource_group_name = azurerm_resource_group.example.name
 }
@@ -38,7 +38,7 @@ resource "azurerm_subnet" "main_subnet" {
   name                 = "main-subnet"
   resource_group_name  = azurerm_resource_group.example.name
   virtual_network_name = azurerm_virtual_network.example.name
-  address_prefixes     = ["10.0.0.0/23"]
+  address_prefixes     = [var.control_plane_range]
   service_endpoints    = ["Microsoft.Storage", "Microsoft.ContainerRegistry"]
 }
 
@@ -46,7 +46,7 @@ resource "azurerm_subnet" "worker_subnet" {
   name                 = "worker-subnet"
   resource_group_name  = azurerm_resource_group.example.name
   virtual_network_name = azurerm_virtual_network.example.name
-  address_prefixes     = ["10.0.2.0/23"]
+  address_prefixes     = [var.worker_range]
   service_endpoints    = ["Microsoft.Storage", "Microsoft.ContainerRegistry"]
 }
 
