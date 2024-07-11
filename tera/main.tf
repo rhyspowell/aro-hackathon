@@ -1,6 +1,7 @@
 
 
-# Assumes a subscription that has the required registrations against it as per : https://learn.microsoft.com/en-us/azure/openshift/create-cluster?tabs=azure-cli
+# This installation  assumes a subscription that has the required registrations against it as per : https://learn.microsoft.com/en-us/azure/openshift/create-cluster?tabs=azure-cli
+# Where XXXX replace as per instructions
 
 terraform {
   required_providers {
@@ -10,14 +11,16 @@ terraform {
     }
   }
 
-  // Backend state is recommended but not required, this block can be removed for testing environments
+  // Backend state is recommended but not required, this block can be removed for testing environments. To use it , set up a storage account on Azure , create a container and reference the details on the block below
   backend "azurerm" {
-    resource_group_name   = "terraform-backend"
-    storage_account_name  = "terraformbackenddb"
-    container_name        = "terraform-state"
-    key                   = "terraform.tfstate"
+    resource_group_name   = "XXXX"
+    storage_account_name  = "XXXX"
+    container_name        = "XXXX"
+    key                   = "XXXX"
   }
 }
+
+#Skips regs as mentioned in the start - alternatively regs can be done here 
 
 provider "azurerm" {
   features {}
@@ -26,23 +29,21 @@ provider "azurerm" {
 }
 
 
-####################
-# Reference Service Principal
-####################
+
 
 
 ####################
-# Reference Service Principal
+# Reference your Service Principal - it has to have MS Graph API directory read permissions as well as be a contributor on the sub level
 ####################
 
 data "azuread_service_principal" "OpenShift_Service_Principal" {
-  client_id = "c3b08a33-f32a-4f91-826d-6901e0738b7e"
+  client_id = "XXXX"
 }
 
 
 
 data "azuread_service_principal" "redhatopenshift" {
-  // This is the Azure Red Hat OpenShift RP service principal id, do NOT delete it
+  // This is the Azure Red Hat OpenShift RP service principal id - USE it as is 
   client_id = "f1dd0a37-89c6-4e07-bcd1-ffd3d43d8875"
 }
 
@@ -141,7 +142,7 @@ resource "azurerm_redhat_openshift_cluster" "example" {
   }
 
   service_principal {
-    client_id     = "c3b08a33-f32a-4f91-826d-6901e0738b7e"
+    client_id     = "XXXX"
     client_secret = var.client_password
   }
 

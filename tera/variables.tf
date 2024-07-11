@@ -1,6 +1,6 @@
 variable "client_id" {
     type = string
-    default = "c3b08a33-f32a-4f91-826d-6901e0738b7e"
+    default = "XXXX"
 }
 
 
@@ -24,7 +24,7 @@ variable "cluster_name" {
 
 variable "cluster_domain" {
     type = string
-    default = "azure-db"
+    default = "XXXX"
 }
 
 variable "cluster_version" {
