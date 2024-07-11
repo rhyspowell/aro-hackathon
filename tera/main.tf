@@ -1,3 +1,7 @@
+
+
+# Assumes a subscription that has the required registrations against it as per : https://learn.microsoft.com/en-us/azure/openshift/create-cluster?tabs=azure-cli
+
 terraform {
   required_providers {
     azurerm = {
@@ -8,10 +12,10 @@ terraform {
 
   // Backend state is recommended but not required, this block can be removed for testing environments
   backend "azurerm" {
-    resource_group_name  = ""
-    storage_account_name = ""
-    container_name       = ""
-    key                  = "example.terraform.tfstate"
+    resource_group_name   = "terraform-backend"
+    storage_account_name  = "terraformbackenddb"
+    container_name        = "terraform-state"
+    key                   = "terraform.tfstate"
   }
 }
 
@@ -26,12 +30,19 @@ provider "azurerm" {
 # Reference Service Principal
 ####################
 
-data "azuread_service_principal" "example" {
-  client_id = var.client_id
+
+####################
+# Reference Service Principal
+####################
+
+data "azuread_service_principal" "OpenShift_Service_Principal" {
+  client_id = "c3b08a33-f32a-4f91-826d-6901e0738b7e"
 }
 
+
+
 data "azuread_service_principal" "redhatopenshift" {
-  //  Azure Red Hat OpenShift RP service principal id, MAKE SURE ITS NOT DELETED
+  // This is the Azure Red Hat OpenShift RP service principal id, do NOT delete it
   client_id = "f1dd0a37-89c6-4e07-bcd1-ffd3d43d8875"
 }
 
@@ -81,13 +92,13 @@ resource "azurerm_role_assignment" "role_network1" {
   scope                = azurerm_virtual_network.example.id
   role_definition_name = "Network Contributor"
   // Note: remove "data." prefix to create a new service principal
-  principal_id         = data.azuread_service_principal.example.object_id
+  principal_id         = data.azuread_service_principal.redhatopenshift.object_id
 }
 
 resource "azurerm_role_assignment" "role_network2" {
   scope                = azurerm_virtual_network.example.id
   role_definition_name = "Network Contributor"
-  principal_id         = data.azuread_service_principal.redhatopenshift.object_id
+  principal_id         = data.azuread_service_principal.OpenShift_Service_Principal.object_id
 }
 
 ####################
@@ -104,7 +115,6 @@ resource "azurerm_redhat_openshift_cluster" "example" {
     version = var.cluster_version
     pull_secret = var.pull_secret
   }
-
   network_profile {
     pod_cidr     = "10.128.0.0/14"
     service_cidr = "172.30.0.0/16"
@@ -131,7 +141,7 @@ resource "azurerm_redhat_openshift_cluster" "example" {
   }
 
   service_principal {
-    client_id     = data.azuread_service_principal.example.client_id
+    client_id     = "c3b08a33-f32a-4f91-826d-6901e0738b7e"
     client_secret = var.client_password
   }
 

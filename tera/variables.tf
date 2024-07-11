@@ -1,5 +1,6 @@
 variable "client_id" {
     type = string
+    default = "c3b08a33-f32a-4f91-826d-6901e0738b7e"
 }
 
 
@@ -9,27 +10,26 @@ variable "client_password" {
 
 variable "resource_group_name" {
     type = string
-    default = "aro-example-resource-group"
 }
 
 variable "location" {
     type = string
-    default = "eastus"
+    default = "uksouth"
 }
 
 variable "cluster_name" {
     type = string
-    default = "MyExampleCluster"
+    default = "arocluster"
 }
 
 variable "cluster_domain" {
     type = string
-    default = ""
+    default = "azure-db"
 }
 
 variable "cluster_version" {
     type = string
-    default = "4.12.25"
+    default = "4.14.16"
 }
 
 // Needs to be passed in to the cli, format should be:
