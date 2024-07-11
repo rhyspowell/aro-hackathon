@@ -52,9 +52,18 @@ variable "control_plane_range" {
   default = "10.0.0.0/23"
 }
 
+variable "control_plane_nodes_size" {
+  type    = string
+  default = "Standard_D8s_v3"
+}
 variable "worker_range" {
   type    = string
   default = "10.0.2.0/23"
+}
+
+variable "worker_nodes_size" {
+  type    = string
+  default = "Standard_D4s_v3"
 }
 
 // Needs to be passed in to the cli, format should be:

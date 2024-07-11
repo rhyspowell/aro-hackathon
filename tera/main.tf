@@ -88,7 +88,7 @@ resource "azurerm_redhat_openshift_cluster" "example" {
   }
 
   main_profile {
-    vm_size   = "Standard_D8s_v3"
+    vm_size   = var.control_plane_nodes_size
     subnet_id = azurerm_subnet.main_subnet.id
   }
 
@@ -101,14 +101,14 @@ resource "azurerm_redhat_openshift_cluster" "example" {
   }
 
   worker_profile {
-    vm_size      = "Standard_D4s_v3"
+    vm_size      = var.worker_nodes_size
     disk_size_gb = 128
     node_count   = 3
     subnet_id    = azurerm_subnet.worker_subnet.id
   }
 
   service_principal {
-    client_id     = "XXXX"
+    client_id     = var.client_id
     client_secret = var.client_password
   }
 
