@@ -1,4 +1,5 @@
 client_id                   = "value"
+client_password             = "value"
 storage_resource_group_name = "value"
 resource_group_name         = "value"
 storage_group_name          = "value"
