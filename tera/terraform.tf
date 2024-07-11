@@ -13,8 +13,8 @@ terraform {
   backend "azurerm" {
     resource_group_name  = "$STORAGE_RESOURCE_GROUP_NAME"
     storage_account_name = "$STORAGE_ACCOUNT_NAME"
-    container_name       = "$CONTAINER_NAME"
-    key                  = "$KEY"
+    container_name       = "$STORAGE_CONTAINER_NAME"
+    key                  = "$STORAGE_KEY"
   }
 }
 
