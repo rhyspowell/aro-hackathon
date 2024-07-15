@@ -11,6 +11,7 @@ spec:
   name: namespace-configuration-operator
   source: community-operators
   sourceNamespace: openshift-marketplace
+  startingCSV: namespace-configuration-operator.v1.2.6
 ---
 # Install Devspaces
 apiVersion: operators.coreos.com/v1alpha1
