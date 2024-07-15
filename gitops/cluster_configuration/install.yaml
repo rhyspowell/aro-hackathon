@@ -62,3 +62,25 @@ spec:
   source: redhat-operators
   sourceNamespace: openshift-marketplace
   startingCSV: custom-metrics-autoscaler.v2.12.1-394
+---
+# Install OpenShift Developerhub
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    openshift.io/display-name: "RHDH"
+  labels:
+    openshift.io/cluster-monitoring: "true"
+  name: rhdh-operator
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: rhdh
+  namespace: rhdh-operator
+spec:
+  channel: fast
+  installPlanApproval: Automatic
+  name: rhdh
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
