@@ -84,3 +84,16 @@ spec:
   name: rhdh
   source: redhat-operators
   sourceNamespace: openshift-marketplace
+---
+# Install web terminal
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: web-terminal
+  namespace: openshift-operators
+spec:
+  channel: fast
+  installPlanApproval: Automatic
+  name: web-terminal
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
