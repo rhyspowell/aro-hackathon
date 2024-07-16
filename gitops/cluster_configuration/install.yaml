@@ -22,6 +22,44 @@ spec:
   sourceNamespace: openshift-marketplace
   startingCSV: namespace-configuration-operator.v1.2.6
 ---
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: UserConfig
+metadata:
+  name: db-hack-user-config
+spec:
+  providerName: Microsoft_Entra_ID
+  templates:
+    - objectTemplate: |
+        apiVersion: v1
+        kind: Namespace
+        metadata:
+          name: {{ .Name | replace "." "-"}}-sandbox
+    - objectTemplate: |
+        apiVersion: rbac.authorization.k8s.io/v1
+        kind: RoleBinding
+        metadata:
+          name: {{ .Name | replace "." "-"}}-sandbox
+          namespace: {{ .Name | replace "." "-"}}-sandbox
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: ClusterRole
+          name: admin
+        subjects:
+        - kind: User
+          apiGroup: rbac.authorization.k8s.io
+          name: {{ .Name }}
+    - objectTemplate: |
+        apiVersion: v1
+        kind: ResourceQuota
+        metadata:
+          name: standard-sandbox
+          namespace: {{ .Name | replace "." "-"}}-sandbox
+        spec:
+          hard:
+            requests.cpu: "1"
+            requests.memory: 1Gi
+            requests.ephemeral-storage: 2Gi
+---
 # Install Devspaces
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
